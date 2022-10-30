@@ -5,9 +5,17 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 
 const searchImagesInput = document.querySelector('input[name="searchQuery"]');
-const searchBtn = document.querySelector('button[type="submit"');
+const searchForm = document.querySelector('.search-form');
 const photoGallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('button.load-more');
+
+
+photoGallery.style.display = 'flex';
+photoGallery.style.flexWrap = 'wrap';
+photoGallery.style.gap = '40px';
+photoGallery.style.flexBasis = 'calc((100% - 30px) / 3)';
+photoGallery.style.paddingLeft = '40px';
+
 
 let gallerySimpleLightbox = new SimpleLightbox('.gallery a');
 loadMoreBtn.style.display = 'none';
@@ -18,39 +26,45 @@ function clearGallery() {
     loadMoreBtn.style.display = 'none';
     pageNumber = 1;
 }
+            
+searchForm.addEventListener('submit', handleSubmit);
+function handleSubmit(event) {
+    event.preventDefault();
+    clearGallery();
+    const inputTextTrim = searchImagesInput.value.trim();
+    async function gal() {      
+            let galleryPhoto = await pixabayApiImages(inputTextTrim, pageNumber);
+            if (galleryPhoto.hits.length === 0) {
+            Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+            } else {
+            renderPhotoGallery(galleryPhoto.hits);
+            Notiflix.Notify.success(`Hooray! We found ${galleryPhoto.totalHits} images.`);
+            loadMoreBtn.style.display = 'block';
+            gallerySimpleLightbox.refresh();           
+        }
+    }        
+    if (inputTextTrim !== '') {
+        gal();
+    } 
 
-searchBtn.addEventListener('click', event => {
-  event.preventDefault();
-  clearGallery();
-  const inputTextTrim = searchImagesInput.value.trim();
-  if (inputTextTrim !== '') {
-    pixabayApiImages(inputTextTrim, pageNumber).then(galleryPhoto => {
-      if (galleryPhoto.hits.length === 0) {
-        Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-      } else {
-        renderPhotoGallery(galleryPhoto.hits);
-        Notiflix.Notify.success(`Hooray! We found ${galleryPhoto.totalHits} images.`);      
-        loadMoreBtn.style.display = 'block';
-        gallerySimpleLightbox.refresh();
-       
-    }});
-                            }
-});
+};            
 
 loadMoreBtn.addEventListener('click', () => {
   const inputTextTrim = searchImagesInput.value.trim();
-  loadMoreBtn.style.display = 'none';
-  pixabayApiImages(inputTextTrim, pageNumber).then(galleryPhoto => {
-    if (galleryPhoto.hits.length === 0) {
-      Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-    } else {
-      renderPhotoGallery(galleryPhoto.hits);
-      Notiflix.Notify.success(`Hooray! We found ${galleryPhoto.totalHits} images.`);
-      loadMoreBtn.style.display = 'block';
-      pageNumber += 1;
-    }
-  });
-});
+    loadMoreBtn.style.display = 'none';
+     pageNumber += 1;
+    async function gal() {      
+            let galleryPhoto = await pixabayApiImages(inputTextTrim, pageNumber);
+        if (galleryPhoto.hits.length === 40) {
+                    renderPhotoGallery(galleryPhoto.hits);
+                    Notiflix.Notify.success(`Hooray! We found ${galleryPhoto.totalHits} images.`);
+                    loadMoreBtn.style.display = 'block';
+                    console.log(galleryPhoto.hits);
+                    console.log(pageNumber);
+            }              
+            } 
+    gal();
+                            });
 
 function renderPhotoGallery(photos) { 
     console.log('photo', photos);
@@ -74,7 +88,9 @@ function renderPhotoGallery(photos) {
             </div>`;
     })
     .join('');
-    photoGallery.innerHTML += markup;
+  
+  // photoGallery.innerHTML += markup;
+    photoGallery.insertAdjacentHTML("beforeend", markup);
     
 
 }
