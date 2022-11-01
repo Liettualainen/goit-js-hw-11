@@ -20,6 +20,7 @@ photoGallery.style.paddingLeft = '40px';
 let gallerySimpleLightbox = new SimpleLightbox('.gallery a');
 loadMoreBtn.style.display = 'none';
 let pageNumber = 1;
+const  perPage = 40;
 
 function clearGallery() {
     photoGallery.innerHTML = '';
@@ -55,19 +56,24 @@ loadMoreBtn.addEventListener('click', () => {
      pageNumber += 1;
     async function gal() {      
             let galleryPhoto = await pixabayApiImages(inputTextTrim, pageNumber);
-        if (galleryPhoto.hits.length === 40) {
+        if (pageNumber - 1 > Math.floor(galleryPhoto.totalHits / perPage)) {           
+            Notiflix.Notify.failure('Sorry, there are no more images.');
+            loadMoreBtn.style.display = 'hide';
+            console.log(galleryPhoto.totalHits);
+            return;
+        }
+            else {
                     renderPhotoGallery(galleryPhoto.hits);
-                    Notiflix.Notify.success(`Hooray! We found ${galleryPhoto.totalHits} images.`);
                     loadMoreBtn.style.display = 'block';
                     console.log(galleryPhoto.hits);
                     console.log(pageNumber);
             }              
-            } 
+             }
     gal();
                             });
 
 function renderPhotoGallery(photos) { 
-    console.log('photo', photos);
+    // console.log('photo', photos);
   const markup = photos.map(photo => {     
       return `<div class="photo-card">
                     <a href="${photo.largeImageURL}"><img src="${photo.webformatURL}" alt="${photo.tags}" loading="lazy"/></a>
