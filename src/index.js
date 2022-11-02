@@ -17,25 +17,42 @@ const loadMoreBtn = document.querySelector('button.load-more');
 
 
     body.style.backgroundColor = 'E5E5E5';
+    
     searchForm.style.display = 'flex';
+    searchForm.style.position = 'fixed';
+    searchForm.style.width = '100%';
     searchForm.style.justifyContent = 'center';
+    searchForm.style.marginLeft = 'auto';
+    searchForm.style.marginRight = 'auto';    
+   
+
+
     searchForm.style.fontSize = '30px';
-    searchForm.style.marginBottom = '20px';
     searchForm.style.backgroundColor = 'blue';
-    searchForm.style.paddingTop = '30px';
+    searchForm.style.marginTop = '-20px';
+    // searchForm.style.marginBottom = '30px';
+  
+    searchForm.style.paddingTop = '50px';
     searchForm.style.paddingBottom = '30px';
+    searchForm.style.position = 'fixed';
+    
+    
     searchImagesInput.style.padding = '20px';
     searchImagesInput.style.width = '400px';
 
 
     photoGallery.style.display = 'flex';
     photoGallery.style.flexWrap = 'wrap';
+    photoGallery.style.justifyContent = 'center'; 
+    
     photoGallery.style.gap = '40px';
     photoGallery.style.flexBasis = 'calc((100% - 30px)/3)';
-    photoGallery.style.padding = '30px';
-    photoGallery.style.marginTop = '20px';
-    photoGallery.style.marginLeft = 'auto';
-    photoGallery.style.marginRight = 'auto';
+    photoGallery.style.paddingTop = '170px';
+    // photoGallery.style.paddingLeft = '30px';    
+    // photoGallery.style.paddingLef = '130px';
+    // photoGallery.style.marginTop = '20px';
+    // photoGallery.style.marginLeft = 'auto';
+    // photoGallery.style.marginRight = 'auto';
     // photoGallery.style.borderRadius = '10px';
 
 
