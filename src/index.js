@@ -48,6 +48,8 @@ const loadMoreBtn = document.querySelector('button.load-more');
     photoGallery.style.gap = '40px';
     photoGallery.style.flexBasis = 'calc((100% - 30px)/3)';
     photoGallery.style.paddingTop = '170px';
+     photoGallery.style.paddingBottom = '70px';
+    
     // photoGallery.style.paddingLeft = '30px';    
     // photoGallery.style.paddingLef = '130px';
     // photoGallery.style.marginTop = '20px';
